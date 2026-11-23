@@ -17,9 +17,22 @@ Open http://localhost:1313/ to preview, including drafts. Stop with Ctrl+C.
 hugo --cleanDestinationDir
 ```
 
-The production site is generated in `public/`, excluding drafts. Before
-publishing elsewhere, set `baseURL` in `hugo.toml` to the site's actual URL.
-No hosting or deployment is configured.
+The production site is generated in `public/`, excluding drafts. The live blog is
+https://kentuliveaccount.github.io/PhaseShiftPublic/. Its project-site `baseURL`
+is configured in `hugo.toml`; change it if hosting elsewhere.
+
+## GitHub Pages deployment
+
+GitHub Pages uses **GitHub Actions** as its source (Settings > Pages).
+`.github/workflows/pages.yml` builds with Hugo 0.158.0 and deploys the generated
+`public/` directory on every push to `main`. You can also run **Deploy Hugo site
+to Pages** manually from the Actions tab on `main`. When updating Hugo in the
+workflow, update the archive's SHA-256 checksum as well.
+
+After pushing, wait for both the build and deployment jobs to succeed in Actions.
+Check the home-page article link, the published article, and its styling at the
+live URL. The generic [publishing test](https://kentuliveaccount.github.io/PhaseShiftPublic/posts/publishing-test/)
+is a permanent smoke-test page; its source is `content/posts/publishing-test.md`.
 
 ## Manually publish an article
 
@@ -40,9 +53,16 @@ There is no automatic synchronization.
    ```
 
 3. Put images in `static/images/` (create the directory when needed) and reference
-   them as `![Descriptive alternative text](/images/my-image.jpg)`.
+   them as
+   `![Descriptive alternative text](/PhaseShiftPublic/images/my-image.jpg)`.
+   Root-relative URLs must include `/PhaseShiftPublic/` for this project site;
+   the layouts already include it in navigation and stylesheet links.
 4. Preview with `hugo server -D`, then set `draft = false` when ready to include
    the article in a production build.
+5. Review the production output with `hugo --cleanDestinationDir`, then commit
+   and push the selected public files to `main` to publish them. If branch rules
+   require a pull request, merge it into `main` instead. Confirm the deployment
+   succeeds and open the live article.
 
 Alternatively, run `hugo new content posts/my-article.md` to create a draft with
 front matter, then replace its content with the selected article.
