@@ -1,0 +1,6 @@
+baseURL = "https://example.org/"
+locale = "en-us"
+title = "PhaseShift"
+
+[params]
+  description = "Articles and ideas."
